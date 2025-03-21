@@ -2,35 +2,145 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Import fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap');
+
+/* Custom variables */
 :root {
-  --primary-color: #2563eb;
-  --secondary-color: #1e40af;
-  --text-color: #1f2937;
-  --light-text: #6b7280;
+  /* Light mode */
+  --primary: #3b82f6;
+  --secondary: #8b5cf6;
+  --tertiary: #ec4899;
   --background: #ffffff;
-  --light-background: #f3f4f6;
+  --foreground: #111827;
+  --muted: #9ca3af;
+  --muted-background: #f3f4f6;
+  --border: #e5e7eb;
+}
+
+.dark {
+  /* Dark mode */
+  --primary: #60a5fa;
+  --secondary: #a78bfa;
+  --tertiary: #f472b6;
+  --background: #111827;
+  --foreground: #f9fafb;
+  --muted: #9ca3af;
+  --muted-background: #1f2937;
+  --border: #374151;
 }
 
 @layer base {
   body {
-    @apply text-gray-900 bg-white;
+    @apply text-gray-900 bg-white dark:bg-dark dark:text-gray-100;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display font-semibold;
   }
 }
 
 @layer components {
+  /* Main components */
   .btn-primary {
-    @apply bg-blue-600 text-white px-6 py-2.5 rounded-lg hover:bg-blue-700 transition-colors duration-200 font-medium;
+    @apply px-4 py-2 text-sm font-medium text-white bg-gradient-primary rounded-lg shadow-sm hover:opacity-90 transition-all;
   }
-
+  
   .btn-secondary {
-    @apply bg-white text-blue-600 border border-blue-600 px-6 py-2.5 rounded-lg hover:bg-blue-50 transition-colors duration-200 font-medium;
+    @apply px-4 py-2 text-sm font-medium border border-gray-300 dark:border-dark-accent rounded-lg shadow-sm hover:bg-gray-50 dark:hover:bg-dark-light transition-all;
   }
-
+  
+  .btn-tertiary {
+    @apply px-4 py-2 text-sm font-medium text-accent-primary hover:underline transition-all;
+  }
+  
+  .input-primary {
+    @apply block w-full px-4 py-2 text-gray-900 dark:text-white bg-white dark:bg-dark-light border border-gray-300 dark:border-dark-accent rounded-lg focus:ring-2 focus:ring-accent-primary dark:focus:ring-accent-primary/70 focus:border-accent-primary dark:focus:border-accent-primary/70 outline-none transition-all;
+  }
+  
+  .card {
+    @apply bg-white dark:bg-dark-light rounded-xl shadow-smooth dark:shadow-none border border-gray-100 dark:border-dark-accent p-6 transition-all;
+  }
+  
   .container {
     @apply mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl;
   }
-
+  
   .section-padding {
     @apply py-16 md:py-24;
+  }
+  
+  /* Text styles */
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-primary;
+  }
+  
+  .heading-xl {
+    @apply text-4xl sm:text-5xl md:text-6xl font-bold;
+  }
+  
+  .heading-lg {
+    @apply text-3xl sm:text-4xl font-bold;
+  }
+  
+  .heading-md {
+    @apply text-2xl sm:text-3xl font-bold;
+  }
+  
+  .heading-sm {
+    @apply text-xl sm:text-2xl font-bold;
+  }
+
+  /* Form elements */
+  .form-group {
+    @apply mb-4;
+  }
+  
+  .form-label {
+    @apply block mb-2 text-sm font-medium text-gray-900 dark:text-gray-200;
+  }
+  
+  .form-hint {
+    @apply mt-1 text-sm text-gray-500 dark:text-gray-400;
+  }
+  
+  .form-error {
+    @apply mt-1 text-sm text-red-500;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-slate-100 dark:bg-dark-light;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-slate-300 dark:bg-dark-accent rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-slate-400 dark:bg-slate-600;
+}
+
+/* Gradient animations */
+.bg-animate-gradient {
+  background-size: 400% 400%;
+  animation: gradient 15s ease infinite;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
   }
 }
