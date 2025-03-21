@@ -41,6 +41,19 @@ interface ParticlesProps {
   vy?: number
 }
 
+interface Circle {
+  x: number
+  y: number
+  translateX: number
+  translateY: number
+  size: number
+  alpha: number
+  targetAlpha: number
+  dx: number
+  dy: number
+  magnetism: number
+}
+
 function hexToRgb(hex: string): number[] {
   hex = hex.replace("#", "")
 

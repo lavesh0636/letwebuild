@@ -32,7 +32,7 @@ const signupSchema = z.object({
 type SignupFormValues = z.infer<typeof signupSchema>;
 
 export default function TalentSignup() {
-  const { signUp } = useAuth();
+  const { signUp, updateProfile } = useAuth();
   const router = useRouter();
   const [generalError, setGeneralError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -57,11 +57,21 @@ export default function TalentSignup() {
     setIsSubmitting(true);
 
     try {
-      const { error } = await signUp(data.email, data.password, 'talent');
+      const { error } = await signUp(data.email, data.password);
       
       if (error) {
         setGeneralError(error.message);
       } else {
+        // Update profile with account type
+        const { error: profileError } = await updateProfile({
+          account_type: 'talent'
+        });
+        
+        if (profileError) {
+          setGeneralError(profileError.message);
+          return;
+        }
+        
         // Redirect to onboarding
         router.push('/onboarding/talent');
       }

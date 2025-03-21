@@ -35,15 +35,28 @@ function createMockClient() {
       signInWithOAuth: () => Promise.resolve({ error: null })
     },
     from: () => ({
-      select: () => ({
-        eq: () => ({
-          single: () => Promise.resolve({ data: null, error: null })
-        }),
-        order: () => ({
-          limit: () => Promise.resolve({ data: [], error: null })
-        }),
-        limit: () => Promise.resolve({ data: [], error: null })
-      }),
+      select: (columns: string, options?: any) => {
+        const mockResponse = {
+          data: [],
+          error: null,
+          count: 0, // Add count property for queries with count option
+          status: 200,
+          statusText: 'OK'
+        };
+        
+        return {
+          eq: () => ({
+            single: () => Promise.resolve({ ...mockResponse, data: null })
+          }),
+          order: () => ({
+            limit: () => Promise.resolve(mockResponse)
+          }),
+          limit: () => Promise.resolve(mockResponse),
+          gte: () => Promise.resolve(mockResponse),
+          lt: () => Promise.resolve(mockResponse),
+          single: () => Promise.resolve({ ...mockResponse, data: null })
+        };
+      },
       insert: () => Promise.resolve({ error: null }),
       update: () => ({
         eq: () => Promise.resolve({ error: null }),

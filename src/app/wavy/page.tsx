@@ -1,6 +1,12 @@
 "use client";
 import React from "react";
-import { WavyBackground } from "@/components/ui/wavy-background";
+import dynamic from 'next/dynamic';
+
+// Dynamically import the WavyBackground component to prevent build issues
+const WavyBackground = dynamic(
+  () => import('@/components/ui/wavy-background').then(mod => mod.WavyBackground),
+  { ssr: false } // Disable SSR for this component
+);
 
 export default function WavyPage() {
   return (

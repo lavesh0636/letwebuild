@@ -83,7 +83,28 @@ Open [http://localhost:3000](http://localhost:3000) in your browser to see the r
 
 ## Deployment
 
-This project can be deployed on [Vercel](https://vercel.com/) or any other hosting platform that supports Next.js.
+### Vercel Deployment
+
+This project is optimized for deployment on [Vercel](https://vercel.com/):
+
+1. Create a new project on Vercel and connect your GitHub repository
+2. Set up the following environment variables in the Vercel dashboard:
+   - `NEXT_PUBLIC_SUPABASE_URL` - Your Supabase project URL
+   - `NEXT_PUBLIC_SUPABASE_ANON_KEY` - Your Supabase anonymous key
+
+The project includes a `postinstall` script that automatically installs all required dependencies and builds the project during deployment.
+
+### Troubleshooting Deployment Issues
+
+If you encounter issues during deployment:
+
+1. **Missing dependencies**: Ensure all required packages are properly installed. The `postinstall` script should handle this, but you can manually install any missing packages.
+
+2. **Build errors**: Check your environment variables are correctly set. The application uses mock data when environment variables are not available, but for production, real Supabase credentials are recommended.
+
+3. **Type errors**: If you encounter TypeScript errors during build, update the affected components. The project has been configured to handle most common type issues.
+
+4. **CSS optimization issues**: The project uses the `critters` package for CSS optimization. If you face issues with CSS rendering, consider disabling the `optimizeCss` experiment in `next.config.js`.
 
 ## License
 

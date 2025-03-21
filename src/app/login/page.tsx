@@ -6,6 +6,9 @@ import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
 import { supabase } from "@/lib/supabase";
 
+// Skip static generation for this page
+export const dynamic = 'force-dynamic';
+
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -29,27 +32,32 @@ export default function LoginPage() {
       }
       
       // Redirect to dashboard based on account type
-      const { data } = await supabase
-        .from("profiles")
-        .select("account_type")
-        .eq("email", email)
-        .single();
-      
-      if (data) {
-        switch (data.account_type) {
-          case "candidate":
-            router.push("/candidate");
-            break;
-          case "client":
-            router.push("/client");
-            break;
-          case "admin":
-            router.push("/admin");
-            break;
-          default:
-            router.push("/");
+      try {
+        const { data } = await supabase
+          .from("profiles")
+          .select("account_type")
+          .eq("email", email)
+          .single();
+        
+        if (data) {
+          switch (data.account_type) {
+            case "candidate":
+              router.push("/candidate");
+              break;
+            case "client":
+              router.push("/client");
+              break;
+            case "admin":
+              router.push("/admin");
+              break;
+            default:
+              router.push("/");
+          }
+        } else {
+          router.push("/onboarding");
         }
-      } else {
+      } catch (queryError) {
+        console.error("Error fetching profile:", queryError);
         router.push("/onboarding");
       }
     } catch (err) {

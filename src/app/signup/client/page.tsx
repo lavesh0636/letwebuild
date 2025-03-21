@@ -33,7 +33,7 @@ const signupSchema = z.object({
 type SignupFormValues = z.infer<typeof signupSchema>;
 
 export default function ClientSignup() {
-  const { signUp } = useAuth();
+  const { signUp, updateProfile } = useAuth();
   const router = useRouter();
   const [generalError, setGeneralError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -59,13 +59,23 @@ export default function ClientSignup() {
     setIsSubmitting(true);
 
     try {
-      const { error } = await signUp(data.email, data.password, 'client');
+      const { error } = await signUp(data.email, data.password);
       
       if (error) {
         setGeneralError(error.message);
       } else {
         // Store company name for onboarding
         sessionStorage.setItem('companyName', data.companyName);
+        
+        // Update profile with account type
+        const { error: profileError } = await updateProfile({
+          account_type: 'client'
+        });
+        
+        if (profileError) {
+          setGeneralError(profileError.message);
+          return;
+        }
         
         // Redirect to onboarding
         router.push('/onboarding/client');
